@@ -1,0 +1,77 @@
+/* Reset default margin and padding */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, address, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #705392;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+.navbar {
+    background-color: #3e0e66;
+    color: #fff;
+    padding: 10px;
+}
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+.login-form {
+    margin-top: 50px; 
+}
+.navbar ul {
+    list-style: none;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar ul li a {
+    color: #610f75;
+    text-decoration: none;
+}
+
+.content {
+    padding: 20px;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+#logo-container {
+    margin-left: 20px; 
+    display: flex;
+    align-items: center;
+}
+#login-message {
+    position: absolute;
+    top: 50%;
+    left: 20px; 
+    transform: translateY(-50%);
+    z-index: 1000; 
+    color: rgb(44, 3, 53); 
+}
