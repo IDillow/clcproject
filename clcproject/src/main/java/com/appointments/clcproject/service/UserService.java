@@ -16,7 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Commite transaction updates and perform rollback on unsuccessful updates
+    // Commit transaction updates and perform rollback on unsuccessful updates
     @Transactional
     public void registerUser(RegisterUser user) {
         userRepository.save(user);

@@ -1,11 +1,14 @@
 package com.appointments.clcproject.controller;
 
+import com.appointments.clcproject.entity.Appointment;
 import com.appointments.clcproject.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class AppointmentController {
@@ -19,7 +22,6 @@ public class AppointmentController {
 
     @GetMapping("/appointments")
     public String showAppointmentsPage() {
-        // Code to retrieve and display appointments, or redirect to appropriate page
         return "appointments";
     }
 
@@ -28,5 +30,56 @@ public class AppointmentController {
                                     @RequestParam("businessHours") String businessHours) {
         appointmentService.createAppointment(date, businessHours);
         return "redirect:/appointments"; // Redirects to the appointments page after creating an appointment
+    }
+
+    @GetMapping("/search")
+    public String searchAppointments(@RequestParam("appointmentDate") String appointmentDateStr, Model model) {
+        List<Appointment> appointments = appointmentService.findAppointmentsByDateString(appointmentDateStr);
+        model.addAttribute("appointments", appointments);
+        return "search"; 
+    }
+
+    @GetMapping("/appointments/update/{id}")
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+        Appointment appointment = appointmentService.findById(id); // Fetch the appointment
+        model.addAttribute("appointment", appointment);
+        return "update-appointment";
+    }
+
+    @PostMapping("/appointments/update/{id}")
+    public String updateAppointment(@PathVariable Long id,
+                                    @RequestParam("appointmentDate") String appointmentDate,
+                                    @RequestParam("businessHours") String businessHours,
+                                    @RequestParam("searchDate") String searchDate,
+                                    RedirectAttributes redirectAttributes) {
+        appointmentService.updateAppointment(id, appointmentDate, businessHours);
+        redirectAttributes.addFlashAttribute("successMessage", "Appointment updated successfully.");
+        return "redirect:/appointments"; // Redirect to the appointments page
+    }
+
+    // Method for showing delete confirmation
+    @GetMapping("/appointments/confirm-delete/{id}")
+    public String showDeleteConfirmation(@PathVariable("id") Long id, Model model) {
+        Appointment appointment = appointmentService.findById(id);
+        model.addAttribute("appointment", appointment);
+        return "confirm-delete";
+    }
+
+    // Adjusted delete method
+    @PostMapping("/appointments/delete/{id}")
+    public String deleteAppointment(@PathVariable("id") Long id,
+                                    @RequestParam(value = "searchDate", required = false) String searchDate,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            appointmentService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Appointment deleted successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting appointment: " + e.getMessage());
+        }
+        if (searchDate != null) {
+            return "redirect:/search?appointmentDate=" + searchDate;
+        } else {
+            return "redirect:/appointments";
+        }
     }
 }
