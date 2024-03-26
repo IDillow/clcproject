@@ -3,8 +3,9 @@ package com.appointments.clcproject.repository;
 import com.appointments.clcproject.entity.RegisterUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<RegisterUser, Long> {
-    RegisterUser findByUsername(String username);
+    Optional<RegisterUser> findByUsername(String username);
 }

@@ -2,10 +2,8 @@ package com.appointments.clcproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.appointments.clcproject.entity.RegisterUser;
 import com.appointments.clcproject.service.UserService;
@@ -21,14 +19,13 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new RegisterUser());
+    public String showRegistrationForm() {
         return "registration"; 
     }
 
     @PostMapping("/doRegistration")
-    public String doRegistration(@ModelAttribute("user") RegisterUser user, BindingResult result) {
-
+    public String doRegistration(RegisterUser user, BindingResult result) {
+    
         if (result.hasErrors()) {
             // If there are form binding errors, re-render the registration form with errors.
             return "registration";
